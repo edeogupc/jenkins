@@ -1,0 +1,44 @@
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name:  my-name
+  labels:
+    app: front
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+       app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - image: nginx
+        name:  first
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "55M"
+...
+kind: kind: Service
+apiVersion: v1
+metadata:
+  name:  Service Name
+spec:
+  selector:
+    app: db
+  type:  NodePort
+  ports:
+  - name:  name-of-the-port
+    port:  80
+    targetPort:  8080
+    nodePort: 30009

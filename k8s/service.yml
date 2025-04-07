@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  Service1
+spec:
+  selector:
+    app: db
+  type:  ClusterIP
+  ports:
+  - name:  todo
+    port:  80
+    targetPort:  8000
