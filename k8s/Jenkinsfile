@@ -1,5 +1,8 @@
 pipeline{
     agent any
+    tools{
+        Nodejs 'node'
+    }
     environment{
         SONAR_HOME = tool('sonar-scanner')
         TAG = "${BUILD_NUMBER}"
