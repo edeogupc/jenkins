@@ -2,6 +2,7 @@ pipeline{
     agent any
     environment{
         SONAR_HOME = tool('sonar-scanner')
+        tag = ${BUILD.NUMBER}
     }
 
     stages{
@@ -46,9 +47,25 @@ pipeline{
                 }
             }
         }
+         stage("Install NPM Dependencies") {
+            steps {
+                sh "npm install"
+            }
+        }
+        stage('OWASP FS SCAN') {
+            steps {
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit -n', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+    }
         stage("trivy scan"){
             steps{
-                sh ' trivy fs --exit-code 1 --severity critical .'
+                sh ' trivy fs --exit-code 1 --severity CRITICAL --format table ..'
+            }
+        }
+        stage("docker build"){
+            steps{
+                sh ' docker build -t chumaedeogu/zobo:${tag}'
+                
             }
         }
 
