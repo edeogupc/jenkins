@@ -21,7 +21,7 @@ pipeline{
             steps{
                 withSonarQubeEnv('sonar') {
                     sh '''
-                     ${SONAR_HOME}/bin/scaner-scanner -Dsonar.ProjectName="zoba" \n
+                     ${SONAR_HOME}/bin/sonar-scanner -Dsonar.ProjectName="zoba" \n
                      -Dsonar.ProjectKey="zoba"
                      
                     '''
