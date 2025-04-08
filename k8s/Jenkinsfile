@@ -33,6 +33,24 @@ pipeline{
                  }
             }
         }
+        stage("wait for quality gate"){
+            steps{
+                script{
+                    timeout(time: 5, unit: "Minutes"){
+                        def ret = waitForQualityFate(){
+                            if (ret.status != 'ok')
+                               echo " the job failed because of ${ret.status}"
+                        }
+                    }
+                }
+            }
+        }
+        stage("trivy scan"){
+            steps{
+                sh ' trivy fs --exit-code 1 --severity critical .'
+            }
+        }
+
 
 
     }
