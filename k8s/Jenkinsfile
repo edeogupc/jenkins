@@ -19,7 +19,7 @@ pipeline{
         }
         stage("static code anayysis"){
             steps{
-                withSonarQubeEnv('sonar') {
+                withSonarQubeEnv('SonarQube') {
                     sh '''
                      ${SONAR_HOME}/bin/sonar-scanner -Dsonar.ProjectName="zoba" \n
                      -Dsonar.ProjectKey="zoba"
