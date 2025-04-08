@@ -2,7 +2,7 @@ pipeline{
     agent any
     environment{
         SONAR_HOME = tool('sonar-scanner')
-        tag = ${BUILD.NUMBER}
+        TAG = "${BUILD_NUMBER}"
     }
 
     stages{
@@ -65,7 +65,7 @@ pipeline{
         }
         stage("docker build"){
             steps{
-                sh ' docker build -t chumaedeogu/zobo:${tag}'
+                sh ' docker build -t chumaedeogu/zobo:${TAG}'
                 
             }
         }
