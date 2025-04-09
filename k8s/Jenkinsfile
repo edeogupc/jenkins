@@ -53,8 +53,7 @@ pipeline{
                 }
             }
         }
-        stages {
-        stage("Install NPM Dependencies") {
+               stage("Install NPM Dependencies") {
             when {
                 expression { params.RUN_NPM_INSTALL }
             }
@@ -63,9 +62,7 @@ pipeline{
             }
         }
 
-        // other stages...
-           }
-           
+        
         stage('OWASP FS SCAN') {
             steps {
                 dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit -n', odcInstallation: 'DP-Check'
