@@ -3,6 +3,9 @@ pipeline{
     tools{
        nodejs 'node' 
     }
+    parameters {
+        booleanParam(name: 'RUN_NPM_INSTALL', defaultValue: true, description: 'Run npm install step')
+    }
     environment{
         SONAR_HOME = tool('sonar-scanner')
         TAG = "${BUILD_NUMBER}"
@@ -50,11 +53,19 @@ pipeline{
                 }
             }
         }
-        //  stage("Install NPM Dependencies") {
-        //     steps {
-        //         sh "npm install"
-        //     }
-        // }
+        stages {
+        stage("Install NPM Dependencies") {
+            when {
+                expression { params.RUN_NPM_INSTALL }
+            }
+            steps {
+                sh "npm install"
+            }
+        }
+
+        // other stages...
+           }
+           
         stage('OWASP FS SCAN') {
             steps {
                 dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit -n', odcInstallation: 'DP-Check'
@@ -63,7 +74,7 @@ pipeline{
         }
         stage("trivy scan"){
             steps{
-                sh ' trivy fs --exit-code 1 --severity CRITICAL --format table ..'
+                sh ' trivy fs --exit-code 1 --severity CRITICAL,HIGH --format table ..'
             }
         }
         stage("docker build"){
