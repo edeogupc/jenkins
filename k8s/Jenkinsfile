@@ -73,6 +73,12 @@ pipeline{
             }
         }
 
+        stage("push to docker hub"){
+            steps{
+                with
+            }
+        }
+
 
 
 
