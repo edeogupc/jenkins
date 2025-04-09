@@ -59,20 +59,19 @@ pipeline{
         //         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
         //       }
         // }
-        stage('trivy scan') {
-          steps {
-            sh '''
-            # Install Trivy if not available
-            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
-            
-            # Check that it's installed
-            trivy --version
+stage('trivy scan') {
+    steps {
+        sh '''
+            mkdir -p $HOME/bin
+            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b $HOME/bin
+            export PATH="$HOME/bin:$PATH"
 
-            # Run the scan
+            trivy --version
             trivy fs --exit-code 0 --severity CRITICAL,HIGH --format table ..
-              '''
-              }
-            }
+        '''
+    }
+  }
+
         stage("docker build"){
             steps{
                 sh ' docker build -t chumaedeogu/zobo:${TAG} .'
