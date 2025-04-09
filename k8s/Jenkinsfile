@@ -50,11 +50,11 @@ pipeline{
                 }
             }
         }
-         stage("Install NPM Dependencies") {
-            steps {
-                sh "npm install"
-            }
-        }
+        //  stage("Install NPM Dependencies") {
+        //     steps {
+        //         sh "npm install"
+        //     }
+        // }
         stage('OWASP FS SCAN') {
             steps {
                 dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit -n', odcInstallation: 'DP-Check'
@@ -68,10 +68,12 @@ pipeline{
         }
         stage("docker build"){
             steps{
-                sh ' docker build -t chumaedeogu/zobo:${TAG}'
+                sh ' docker build -t chumaedeogu/zobo:${TAG} .'
                 
             }
         }
+
+
 
 
 
