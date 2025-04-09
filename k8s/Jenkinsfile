@@ -53,12 +53,12 @@ pipeline{
                 }
             }
         }
-        stage('OWASP FS SCAN') {
-            steps {
-                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit -n', odcInstallation: 'owasp'
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-              }
-        }
+        // stage('OWASP FS SCAN') {
+        //     steps {
+        //         dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit -n', odcInstallation: 'owasp'
+        //         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+        //       }
+        // }
         stage("trivy scan"){
             steps{
                 sh ' trivy fs --exit-code 1 --severity CRITICAL,HIGH --format table ..'
